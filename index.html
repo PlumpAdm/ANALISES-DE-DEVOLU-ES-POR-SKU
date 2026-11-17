@@ -18,16 +18,82 @@ a.card:hover{border-color:var(--ac);transform:translateY(-2px)}
 .tag.n{background:#12352a;color:#86efac}
 .foot{color:var(--mu);font-size:12px;margin-top:26px}
 .empty{color:var(--mu);padding:20px 0;display:none}
+.guide{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;margin-bottom:28px}
+.guide>summary{cursor:pointer;font-size:18px;font-weight:700;list-style:none}.guide>summary::-webkit-details-marker{display:none}
+.guide>summary:after{content:" ▾";color:var(--mu);font-weight:400}.guide:not([open])>summary:after{content:" ▸"}
+.gsub{color:var(--mu);margin:6px 0 16px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:14px}
+.step{background:#0f1420;border:1px solid var(--bd);border-radius:12px;padding:14px 16px}
+.step .who{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ac2);margin-bottom:4px}
+.step h4{margin:0 0 8px;font-size:15px}.step ol,.step ul{margin:0;padding-left:20px}.step li{margin:5px 0}
+.ex{background:#0f1420;border-left:3px solid var(--ac);border-radius:6px;padding:10px 14px;margin:8px 0;color:#c7cee0}
+.guide h5{margin:16px 0 6px;font-size:14px}
+.guide code{background:#0f1420;border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:12px}
+.note{color:var(--mu);font-size:13px}
+.hd{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:18px}
 </style></head><body><div class="wrap">
 <h1>Análises de Devoluções por SKU</h1>
-<div class="sub">Relatórios interativos com os relatos dos clientes, motivos detalhados e (quando disponível) taxa de devolução sobre as vendas.</div>
+<div class="sub">Relatórios interativos com os relatos dos clientes, motivos detalhados e taxa de devolução sobre as vendas, por produto (SKU).</div>
+<details class="guide" open>
+<summary>Como fazer uma análise por SKU (passo a passo)</summary>
+<div class="gsub">Qualquer pessoa da equipe pode pedir uma análise. São 3 etapas: quem pede, o relatório de vendas do UpSeller e a montagem/publicação pelo Claude.</div>
+<div class="steps">
+ <div class="step"><div class="who">Etapa 1 · Pedido</div><h4>Peça a análise ao Claude</h4>
+  <ol>
+   <li>Informe o <b>produto</b>: código do SKU (5 dígitos, ex.: <code>03193</code>) e o nome do produto (ex.: Conjunto Felicia).</li>
+   <li>Informe o <b>período</b> com datas exatas (ex.: <code>18/10 a 17/11</code> ou "últimos 30 dias").</li>
+  </ol>
+  <div class="ex">Exemplo: "Preciso da análise do SKU 03193 - Conjunto Felicia, período de 18/10 a 17/11."</div>
+  <div class="note">O Claude levanta as devoluções do produto no período a partir da planilha mestre de devoluções e avisa quando estiver pronto para receber o relatório de vendas.</div>
+ </div>
+ <div class="step"><div class="who">Etapa 2 · UpSeller</div><h4>Baixe o relatório de vendas</h4>
+  <ol>
+   <li>No UpSeller, abra <b>Análises → Vendas por anúncio</b>.</li>
+   <li>Clique na visão <b>Por Variante</b>.</li>
+   <li>Filtre o <b>mesmo período</b> pedido na Etapa 1.</li>
+   <li>Troque o filtro de Título para <b>Variante SKU</b>.</li>
+   <li>Digite o <b>código do produto</b> (ex.: <code>03193</code>).</li>
+   <li>Clique em <b>Exportar</b> e depois em <b>Baixar</b>.</li>
+   <li><b>Envie o arquivo baixado</b> (.xlsx) para o Claude na conversa.</li>
+  </ol>
+  <div class="note">O período do relatório precisa ser exatamente o mesmo da análise, senão a taxa de devolução fica errada.</div>
+ </div>
+ <div class="step"><div class="who">Etapa 3 · Claude</div><h4>Montagem e publicação</h4>
+  <ul>
+   <li>Monta o dashboard interativo: relatos dos clientes (A–Z), motivos, filtros por plataforma/variação/motivo, exportação em CSV e a <b>taxa de devolução</b>.</li>
+   <li>Cria a pasta do produto neste site (ex.: <code>Conjunto Felicia - 18-10 a 17-11</code>) e publica.</li>
+   <li>Adiciona o card do produto nesta página inicial.</li>
+   <li>Entrega o link (a publicação leva 1 a 2 minutos para aparecer).</li>
+  </ul>
+ </div>
+</div>
+<h5>Como ler os números</h5>
+<ul>
+ <li><b>Taxa de devolução (valor)</b> = valor devolvido no período ÷ valor vendido no período. <b>Taxa (peças)</b> = devoluções ÷ peças vendidas.</li>
+ <li>As devoluções entram pela <b>data real da devolução</b> e as vendas pela data do pedido. Por isso a taxa é aproximada: algumas devoluções do período vêm de vendas anteriores a ele.</li>
+ <li>Os filtros de plataforma e de variação (SKU) também recalculam a taxa. Variações com poucas vendas oscilam muito, então olhe junto o número de devoluções.</li>
+ <li>No Mercado Livre, a maioria dos relatos é a mensagem padrão ("chegou em boas condições, mas eu não o quero"), que não traz o motivo real. O botão "só com relato específico" oculta esses casos.</li>
+</ul>
+<h5>Antes de pedir, confira</h5>
+<ul>
+ <li>As devoluções do período já foram registradas na planilha mestre (quem trata as devoluções precisa ter lançado os pedidos recebidos). Devolução não registrada não aparece na análise.</li>
+ <li>O mesmo período vale para o pedido e para o relatório do UpSeller.</li>
+</ul>
+<h5>Regras para manter o site organizado</h5>
+<ul>
+ <li>Cada análise fica em uma pasta: <code>Nome do Produto - DD-MM a DD-MM</code> (use hífen nas datas, nunca barra, porque a barra cria pastas aninhadas no GitHub).</li>
+ <li><b>Não renomeie nem apague</b> pastas já publicadas: o link de cada análise depende do nome da pasta.</li>
+ <li>Nova análise do mesmo produto em outro período = nova pasta (a antiga permanece como histórico).</li>
+</ul>
+</details>
+<h2 class="hd">Análises publicadas</h2>
 <div class="tools">
  <input id="q" placeholder="Buscar SKU…">
  <select id="ord"><option value="dt">Mais recentes primeiro</option><option value="sku">SKU (A–Z)</option></select>
 </div>
 <div class="grid" id="g"></div>
 <div class="empty" id="e">Nenhum relatório encontrado.</div>
-<div class="foot">Para adicionar um novo relatório: crie a pasta do produto com o index.html dentro e inclua uma linha na lista <code>REPORTS</code> no início do script deste index.html.</div>
+<div class="foot">Manutenção: a cada análise nova, inclua uma linha na lista <code>REPORTS</code> no início do script deste index.html e suba a pasta do produto com o index.html dentro.</div>
 </div>
 <script>
 // ===== EDITE AQUI: um item por relatório =====
