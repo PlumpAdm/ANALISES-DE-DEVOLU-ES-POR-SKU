@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análises de Devoluções por SKU</title>
+<style>
+:root{--bg:#0f1420;--card:#171e2e;--bd:#263048;--tx:#e5e9f2;--mu:#8b95ad;--ac:#6366f1;--ac2:#22d3ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 -apple-system,Segoe UI,Arial,sans-serif;padding:32px 24px}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-size:26px;margin:0 0 4px}.sub{color:var(--mu);margin-bottom:24px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+input,select{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font:inherit}
+input{flex:1;min-width:240px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;transition:.15s}
+a.card:hover{border-color:var(--ac);transform:translateY(-2px)}
+.sku{font-size:22px;font-weight:700;margin-bottom:2px}.per{color:var(--mu);font-size:12px;margin-bottom:12px}
+.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.k .l{color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.04em}.k .v{font-size:17px;font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;background:#26304a;color:#c7d2fe;margin-top:12px}
+.tag.n{background:#12352a;color:#86efac}
+.foot{color:var(--mu);font-size:12px;margin-top:26px}
+.empty{color:var(--mu);padding:20px 0;display:none}
+</style></head><body><div class="wrap">
+<h1>Análises de Devoluções por SKU</h1>
+<div class="sub">Relatórios interativos com os relatos dos clientes, motivos detalhados e (quando disponível) taxa de devolução sobre as vendas.</div>
+<div class="tools">
+ <input id="q" placeholder="Buscar SKU…">
+ <select id="ord"><option value="dt">Mais recentes primeiro</option><option value="sku">SKU (A–Z)</option></select>
+</div>
+<div class="grid" id="g"></div>
+<div class="empty" id="e">Nenhum relatório encontrado.</div>
+<div class="foot">Para adicionar um novo relatório: crie a pasta do produto com o index.html dentro e inclua uma linha na lista <code>REPORTS</code> no início do script deste index.html.</div>
+</div>
+<script>
+// ===== EDITE AQUI: um item por relatório =====
+const REPORTS=[
+ {sku:"03154",titulo:"Vestido Pietra",arq:"Vestido%20Pietra%20-%2018-10%20a%2017-11/",ini:"2026-10-18",fim:"2026-11-17",dias:30,dev:14,val:"R$ 1.529,59",taxa:"9,4%",nota:"SKU 03154 · relatos, motivos e taxa de devolução"}
+];
+// ==============================================
+const br=s=>s.split('-').reverse().join('/');
+const g=document.getElementById('g');
+function render(){
+ const q=document.getElementById('q').value.trim(),o=document.getElementById('ord').value;
+ let rs=REPORTS.filter(r=>!q||(r.sku+' '+r.titulo).includes(q));
+ rs.sort((a,b)=>o==='sku'?a.sku.localeCompare(b.sku):b.fim.localeCompare(a.fim)||a.sku.localeCompare(b.sku));
+ g.innerHTML=rs.map(r=>`<a class="card" href="${r.arq}"><div class="sku">${r.titulo}</div>
+ <div class="per">Últimos ${r.dias} dias · ${br(r.ini)} a ${br(r.fim)}</div>
+ <div class="row"><div class="k"><div class="l">Devoluções</div><div class="v">${r.dev}</div></div>
+ <div class="k"><div class="l">Valor devolvido</div><div class="v">${r.val}</div></div>
+ ${r.taxa?`<div class="k"><div class="l">Taxa de devolução</div><div class="v">${r.taxa}</div></div>`:''}</div>
+ ${r.nota?`<div class="per" style="margin:10px 0 0">${r.nota}</div>`:''}
+ ${r.novo?'':''}</a>`).join('');
+ document.getElementById('e').style.display=rs.length?'none':'block';
+}
+q.oninput=render;ord.onchange=render;render();
+</script></body></html>
