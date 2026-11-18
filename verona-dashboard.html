@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conjunto Verona · SKU 03147 — Devoluções 18/10 a 17/11</title>
+<style>
+:root{--bg:#0f1420;--card:#171e2e;--bd:#263048;--tx:#e5e9f2;--mu:#8b95ad;--ac:#6366f1;--ac2:#22d3ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 -apple-system,Segoe UI,Arial,sans-serif;padding:24px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mu);margin-bottom:20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px 16px}
+.kpi .l{color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.kpi .v{font-size:26px;font-weight:700;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;margin-bottom:16px}
+.card h3{margin:0 0 10px;font-size:14px}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;cursor:pointer;font-size:13px}
+.bar:hover .nm{color:#fff}.bar.sel .fill{outline:2px solid #fff}
+.nm{flex:0 0 46%;color:#c7cee0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{flex:1;background:#0f1420;border-radius:6px;height:16px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:6px}
+.n{flex:0 0 34px;text-align:right;color:var(--mu)}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
+select,input{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;font:inherit}
+input{min-width:260px}button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit}
+button.g{background:var(--card);border:1px solid var(--bd);color:var(--tx)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{color:var(--mu);font-size:12px;text-transform:uppercase;cursor:pointer;white-space:nowrap;user-select:none}th:hover{color:#fff}
+tr:hover td{background:#1c2438}.wrap{overflow-x:auto}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:#26304a;color:#c7d2fe;white-space:nowrap}
+.sh{background:#3b2a1a;color:#fdba74}.tt{background:#143a3a;color:#5eead4}.ml{background:#3a3a14;color:#fde047}
+.mu{color:var(--mu);font-size:12px}.foot{color:var(--mu);font-size:12px;margin-top:12px}
+.kpi.hl{border-color:#6366f1;background:#1b2140}.rt{font-variant-numeric:tabular-nums}.small{font-size:12px;color:var(--mu)}.mini th{cursor:default}.mini td,.mini th{padding:6px 8px}</style></head><body>
+<div style="margin-bottom:10px"><a href="../" style="color:#8b95ad;font-size:13px;text-decoration:none">← Todas as análises</a></div>
+<h1 id="h1"></h1>
+<div class="sub" id="sub"></div>
+<div id="fams" style="display:none"></div>
+<div class="kpis" id="rtk"></div>
+<div class="kpis" id="kpis"></div>
+<div class="grid">
+ <div class="card"><h3>Motivo detalhado (clique para filtrar)</h3><div id="cMd"></div></div>
+ <div class="card"><h3>Por variação (SKU)</h3><div id="cSku"></div></div>
+ <div class="card"><h3>Por plataforma</h3><div id="cPl"></div></div>
+ <div class="card"><h3>Por mês da devolução</h3><div id="cMes"></div></div>
+ <div class="card"><h3>Taxa de devolução por plataforma</h3><div id="cRtPl"></div></div>
+ <div class="card" style="grid-column:1/-1"><h3>Taxa de devolução por variação (SKU)</h3><div class="wrap" id="cRtSku"></div></div>
+</div>
+<div class="filters">
+ <input id="q" placeholder="Buscar no relato, pedido ou SKU…">
+ <select id="fPl"><option value="">Todas as plataformas</option></select>
+ <select id="fSku"><option value="">Todos os SKUs</option></select>
+ <select id="fMd"><option value="">Todos os motivos</option></select>
+ <label class="mu"><input type="checkbox" id="fRel" style="min-width:0"> só com relato específico (ocultar padrão ML)</label>
+ <button class="g" id="clr">Limpar filtros</button>
+ <button id="csv">Exportar CSV</button>
+</div>
+<div class="card wrap"><table><thead><tr id="th"></tr></thead><tbody id="tb"></tbody></table><div class="foot" id="ft"></div></div>
+<div class="foot">Taxa de devolução = devoluções do período (pela data real da devolução) ÷ vendas do mesmo período (relatório Vendas por Variante, 18/10/2026 a 17/11/2026, pedidos válidos). Segue o filtro de plataforma e de SKU. Observação: devoluções do período podem ter origem em vendas anteriores a 18/10, então é uma taxa aproximada do período, não de uma coorte de vendas.</div>
+<div class="foot">Ordenação padrão: relato do cliente de A a Z (sem acentos/maiúsculas; empates por nº do pedido). Clique nos cabeçalhos para reordenar. "Motivo detalhado" é interpretação do texto do cliente; mensagens padrão do Mercado Livre não trazem motivo específico.</div>
+<script>
+const DATA=[{"ped": "261012D6JDDETR", "dev": "26101800PNN560T", "sku": "0314705469", "val": 115.44, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Produto ficou grande, sobrou nas axilas e cintura", "md": "Tamanho: ficou grande", "res": "Cliente relata que o produto ficou grande.", "dt": "2026-10-18 09:05", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "261011AE4SVH65", "dev": "26101901VH33CV9", "sku": "0314702969", "val": 121.52, "cat": "Produto Errado", "tag": "WRONG_ITEM", "relato": "Eu comprei um vestido e vei uma calça", "md": "Produto enviado diferente do comprado", "res": "Cliente relata que comprou um vestido e recebeu uma calça.", "dt": "2026-10-18 20:23", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "2610109Y238739", "dev": "26102003W48QVPU", "sku": "0314702966", "val": 121.52, "cat": "Produto Errado", "tag": "WRONG_ITEM", "relato": "Vestido muito menor parece M e é G1 uma pessoa que veste M poderia facilmente vestir. Muito pequeno", "md": "Tamanho: ficou apertado/pequeno", "res": "Cliente relata que o produto ficou apertado/pequeno.", "dt": "2026-10-19 15:39", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "261010A19SSUX3", "dev": "2610220AUSABG2M", "sku": "0314702968", "val": 92.97, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Ficou pequeno", "md": "Tamanho: ficou apertado/pequeno", "res": "Cliente relata que o produto ficou apertado/pequeno.", "dt": "2026-10-22 10:03", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "2610228NJPKXUW", "dev": "2610230BR3FR3HB", "sku": "0314701468", "val": 115.21, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Vou devolver pois n serviu mais vou pedir um tamanho maior", "md": "Não serviu (quer tamanho maior)", "res": "Cliente diz que não serviu e que vai pedir um tamanho maior.", "dt": "2026-10-22 18:30", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "2610218B3GK8FF", "dev": "2610230DNUK0XDX", "sku": "0314702968", "val": 62.19, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Ficou apertado pois o tecido não possui nenhuma elasticidade, e a cor é muito diferente da foto, parece mais para amarelo manteiga do que para bege, não gostei infelizmente", "md": "Tamanho: ficou apertado/pequeno", "res": "Cliente relata que o produto ficou apertado/pequeno.", "dt": "2026-10-23 12:55", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "26102042CDBPM8", "dev": "2610250H4R34FWR", "sku": "0314701468", "val": 115.21, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Vestido lindo, porém não deu em minha vó, vou comprar outro tamanho", "md": "Não serviu (sem detalhe)", "res": "Informa que não serviu, sem detalhar.", "dt": "2026-10-24 22:00", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "261018W1W5M3BC", "dev": "2610260KR45TG1P", "sku": "0314702967", "val": 115.21, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Ficou grande", "md": "Tamanho: ficou grande", "res": "Cliente relata que o produto ficou grande.", "dt": "2026-10-25 22:52", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "261017UNCE8HG7", "dev": "2610270P64YPQ91", "sku": "0314701467", "val": 115.21, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Ficou largo", "md": "Tamanho: ficou grande", "res": "Cliente relata que o produto ficou grande.", "dt": "2026-10-26 22:08", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}, {"ped": "261105FPMSD6D2", "dev": "2611080Q1N6EERV", "sku": "0314705467", "val": 123.5, "cat": "Não Serviu", "tag": "ITEM_NOT_FIT", "relato": "Não vestiu bem.", "md": "Não serviu (sem detalhe)", "res": "Cliente diz que o produto não vestiu bem, sem detalhar o tamanho.", "dt": "2026-11-07 20:07", "plat": "Shopee", "loja": "Shopee", "est": "Completo", "fam": "03147"}];
+const SALES=[{"plat": "TikTok Shop", "sku": "0314705466", "ped": 37, "pc": 37, "val": 2988.79}, {"plat": "TikTok Shop", "sku": "0314705467", "ped": 35, "pc": 35, "val": 3037.54}, {"plat": "Shopee", "sku": "0314705467", "ped": 27, "pc": 27, "val": 3573.05}, {"plat": "TikTok Shop", "sku": "0314705468", "ped": 23, "pc": 23, "val": 1884.92}, {"plat": "TikTok Shop", "sku": "0314705469", "ped": 20, "pc": 20, "val": 1692.3}, {"plat": "Shopee", "sku": "0314701466", "ped": 20, "pc": 20, "val": 2518.19}, {"plat": "Shopee", "sku": "0314705469", "ped": 19, "pc": 19, "val": 2541.4}, {"plat": "TikTok Shop", "sku": "0314701467", "ped": 19, "pc": 19, "val": 1586.53}, {"plat": "TikTok Shop", "sku": "0314714466", "ped": 18, "pc": 18, "val": 1470.98}, {"plat": "TikTok Shop", "sku": "03147014644", "ped": 16, "pc": 16, "val": 1342.46}, {"plat": "TikTok Shop", "sku": "0314701469", "ped": 12, "pc": 13, "val": 1061.81}, {"plat": "Shopee", "sku": "0314701468", "ped": 13, "pc": 13, "val": 1668.13}, {"plat": "TikTok Shop", "sku": "0314702964", "ped": 11, "pc": 11, "val": 1023.24}, {"plat": "TikTok Shop", "sku": "0314701468", "ped": 11, "pc": 11, "val": 953.9}, {"plat": "TikTok Shop", "sku": "0314714468", "ped": 11, "pc": 11, "val": 912.18}, {"plat": "Shopee", "sku": "0314705468", "ped": 10, "pc": 10, "val": 1270.9}, {"plat": "TikTok Shop", "sku": "0314701466", "ped": 9, "pc": 10, "val": 806.15}, {"plat": "Shopee", "sku": "0314702969", "ped": 10, "pc": 10, "val": 1160.1}, {"plat": "TikTok Shop", "sku": "0314714467", "ped": 8, "pc": 8, "val": 534.17}, {"plat": "Shopee", "sku": "0314701469", "ped": 8, "pc": 8, "val": 1032.6}, {"plat": "TikTok Shop", "sku": "0314714469", "ped": 6, "pc": 6, "val": 496.45}, {"plat": "Shopee", "sku": "0314702967", "ped": 5, "pc": 5, "val": 616.92}, {"plat": "Shopee", "sku": "0314705466", "ped": 4, "pc": 4, "val": 580.47}, {"plat": "Shopee", "sku": "0314701467", "ped": 4, "pc": 4, "val": 547.6}, {"plat": "Shopee", "sku": "0314702968", "ped": 4, "pc": 4, "val": 460.84}, {"plat": "TikTok Shop", "sku": "0314701469", "ped": 3, "pc": 3, "val": 384.58}, {"plat": "TikTok Shop", "sku": "0314701468", "ped": 3, "pc": 3, "val": 412.59}, {"plat": "TikTok Shop", "sku": "0314701467", "ped": 2, "pc": 2, "val": 242.79}, {"plat": "Shopee", "sku": "0314714467", "ped": 2, "pc": 2, "val": 384.04}, {"plat": "TikTok Shop", "sku": "0314705466", "ped": 2, "pc": 2, "val": 147.2}, {"plat": "TikTok Shop", "sku": "0314705464", "ped": 2, "pc": 2, "val": 166.35}, {"plat": "Shopee", "sku": "0314714468", "ped": 2, "pc": 2, "val": 384.04}, {"plat": "TikTok Shop", "sku": "0314701466", "ped": 2, "pc": 2, "val": 147.2}, {"plat": "TikTok Shop", "sku": "0314702969", "ped": 2, "pc": 2, "val": 279.72}, {"plat": "TikTok Shop", "sku": "0314701467", "ped": 2, "pc": 2, "val": 147.2}, {"plat": "TikTok Shop", "sku": "0314702968", "ped": 2, "pc": 2, "val": 269.72}, {"plat": "TikTok Shop", "sku": "0314702967", "ped": 1, "pc": 1, "val": 129.86}, {"plat": "TikTok Shop", "sku": "0314701466", "ped": 1, "pc": 1, "val": 139.86}, {"plat": "Shopee", "sku": "0314714466", "ped": 1, "pc": 1, "val": 192.02}, {"plat": "TikTok Shop", "sku": "0314702966", "ped": 1, "pc": 1, "val": 139.86}];
+const fmt=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const dfmt=s=>{const[a,b]=s.split(' ');const[y,m,d]=a.split('-');return d+'/'+m+'/'+y+' '+b};
+const MES={"2026-10": "Outubro/2026", "2026-11": "Novembro/2026"};
+const COLS=[['relato','Relato do cliente (A–Z)'],['md','Motivo detalhado'],['res','Leitura do relato'],['sku','SKU'],['plat','Plataforma'],['cat','Categoria'],['val','Valor'],['dt','Data da devolução'],['ped','Nº Pedido']];
+let sortK='relato',sortD=1,selMd='',fam='03147';
+const norm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function cmp(a,b){let x=a[sortK],y=b[sortK],r;
+ if(sortK==='val')r=x-y;else r=norm(String(x)).localeCompare(norm(String(y)),'pt');
+ if(r===0&&sortK==='relato')r=a.ped.localeCompare(b.ped);return r*sortD}
+function uniq(k){return[...new Set(DATA.map(d=>d[k]))].sort((a,b)=>a.localeCompare(b,'pt'))}
+function fill(id,vals){const s=document.getElementById(id);vals.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)})}
+function famRows(){return DATA.filter(d=>d.fam===fam)}
+function fillSel(id,lbl,k){const s=document.getElementById(id);s.innerHTML='<option value="">'+lbl+'</option>';[...new Set(famRows().map(d=>d[k]))].sort((a,b)=>a.localeCompare(b,'pt')).forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)})}
+function setFam(f){fam=f;selMd='';q.value='';fRel.checked=false;fillSel('fPl','Todas as plataformas','plat');fillSel('fSku','Todos os SKUs','sku');fillSel('fMd','Todos os motivos','md');
+ h1.textContent='Conjunto Verona · SKU '+fam+' — Devoluções dos últimos 30 dias';
+ sub.textContent='Período: 18/10/2026 a 17/11/2026 (pela data real da devolução) · '+[...new Set(famRows().map(d=>d.plat))].join(' + ')+' · Fonte: planilha mestre de devoluções + relatório Vendas por Variante';
+ fams.innerHTML=['03147'].map(f=>`<button class="${f===fam?'':'g'}" data-f="${f}">SKU ${f} (${DATA.filter(d=>d.fam===f).length})</button>`).join('');
+ fams.querySelectorAll('button').forEach(b=>b.onclick=()=>setFam(b.dataset.f));render()}
+document.getElementById('th').innerHTML=COLS.map(c=>`<th data-k="${c[0]}">${c[1]}<span id="a_${c[0]}"></span></th>`).join('');
+document.querySelectorAll('th').forEach(t=>t.onclick=()=>{const k=t.dataset.k;if(sortK===k)sortD*=-1;else{sortK=k;sortD=1}render()});
+['q','fPl','fSku','fMd','fRel'].forEach(i=>document.getElementById(i).oninput=render);
+document.getElementById('clr').onclick=()=>{['q','fPl','fSku','fMd'].forEach(i=>document.getElementById(i).value='');document.getElementById('fRel').checked=false;selMd='';render()};
+function filtered(){const q=norm(document.getElementById('q').value),pl=fPl.value,sk=fSku.value,md=fMd.value||selMd,rel=fRel.checked;
+ return famRows().filter(d=>(!pl||d.plat===pl)&&(!sk||d.sku===sk)&&(!md||d.md===md)&&(!rel||!d.md.startsWith('Desistência'))&&(!q||norm([d.relato,d.ped,d.sku,d.md,d.res].join(' ')).includes(q)))}
+function bars(id,map,onclick){const el=document.getElementById(id);const ent=Object.entries(map).sort((a,b)=>b[1]-a[1]);const mx=Math.max(1,...ent.map(e=>e[1]));
+ el.innerHTML=ent.map(([k,v])=>`<div class="bar ${onclick&&selMd===k?'sel':''}" data-k="${k.replace(/"/g,'&quot;')}"><div class="nm" title="${k}">${k}</div><div class="track"><div class="fill" style="width:${v/mx*100}%"></div></div><div class="n">${v}</div></div>`).join('');
+ if(onclick)el.querySelectorAll('.bar').forEach(b=>b.onclick=()=>{selMd=selMd===b.dataset.k?'':b.dataset.k;fMd.value='';render()})}
+const cnt=(rs,f)=>rs.reduce((m,r)=>{const k=f(r);m[k]=(m[k]||0)+1;return m},{});
+
+function salesRows(){const pl=fPl.value,sk=fSku.value;return SALES.filter(s=>s.sku.startsWith(fam)&&(!pl||s.plat===pl)&&(!sk||s.sku===sk))}
+function baseRet(){const pl=fPl.value,sk=fSku.value;return famRows().filter(d=>(!pl||d.plat===pl)&&(!sk||d.sku===sk))}
+const pct=v=>(v*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+function rateBlock(){
+ const sr=salesRows(),br=baseRet();
+ const sv=sr.reduce((s,r)=>s+r.val,0),sp=sr.reduce((s,r)=>s+r.pc,0),sped=sr.reduce((s,r)=>s+r.ped,0);
+ const rv=br.reduce((s,r)=>s+r.val,0),rn=br.length;
+ document.getElementById('rtk').innerHTML=[
+  ['Taxa de devolução (valor)',sv?pct(rv/sv):'—','hl',fmt(rv)+' devolvidos ÷ '+fmt(sv)+' vendidos'],
+  ['Taxa de devolução (peças)',sp?pct(rn/sp):'—','hl',rn+' devolvidas ÷ '+sp+' peças vendidas'],
+  ['Vendas no período',fmt(sv),'',sp+' peças · '+sped+' pedidos válidos']
+ ].map(k=>`<div class="card kpi ${k[2]}"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="small">${k[3]}</div></div>`).join('');
+ // por plataforma
+ const pls=[...new Set(SALES.filter(s=>s.sku.startsWith(fam)).map(s=>s.plat))];
+ document.getElementById('cRtPl').innerHTML='<table class="mini"><thead><tr><th>Plataforma</th><th>Devol.</th><th>Peças vend.</th><th>Taxa peças</th><th>Valor devol.</th><th>Vendas (R$)</th><th>Taxa valor</th></tr></thead><tbody>'+pls.map(p=>{const s=SALES.filter(x=>x.sku.startsWith(fam)&&x.plat===p),r=famRows().filter(d=>d.plat===p);const sp=s.reduce((a,b)=>a+b.pc,0),sv=s.reduce((a,b)=>a+b.val,0),rv=r.reduce((a,b)=>a+b.val,0);return `<tr><td>${p}</td><td>${r.length}</td><td>${sp}</td><td class="rt">${pct(r.length/sp)}</td><td>${fmt(rv)}</td><td>${fmt(sv)}</td><td class="rt"><b>${pct(rv/sv)}</b></td></tr>`}).join('')+'</tbody></table>';
+ // por variação (respeita filtro de plataforma)
+ const skus=[...new Set(sr.map(s=>s.sku).concat(br.map(r=>r.sku)))].sort();
+ const lines=skus.map(k=>{const s=sr.filter(x=>x.sku===k),r=br.filter(x=>x.sku===k);const sp=s.reduce((a,b)=>a+b.pc,0),sv=s.reduce((a,b)=>a+b.val,0),rv=r.reduce((a,b)=>a+b.val,0);return{k,n:r.length,sp,sv,rv,tp:sp?r.length/sp:(r.length?1:0),tv:sv?rv/sv:0}}).sort((a,b)=>b.tv-a.tv);
+ document.getElementById('cRtSku').innerHTML='<table class="mini"><thead><tr><th>SKU</th><th>Devol.</th><th>Peças vend.</th><th>Taxa peças</th><th>Valor devol.</th><th>Vendas (R$)</th><th>Taxa valor</th></tr></thead><tbody>'+lines.map(l=>`<tr><td>${l.k}</td><td>${l.n}</td><td>${l.sp}</td><td class="rt">${l.sp?pct(l.tp):'—'}</td><td>${fmt(l.rv)}</td><td>${fmt(l.sv)}</td><td class="rt"><b>${l.sv?pct(l.tv):'—'}</b></td></tr>`).join('')+'</tbody></table>';
+}
+function render(){const rs=filtered().sort(cmp);
+ const tot=rs.reduce((s,r)=>s+r.val,0),esp=rs.filter(r=>!r.md.startsWith('Desistência')).length;
+ document.getElementById('kpis').innerHTML=[['Devoluções',rs.length],['Valor devolvido',fmt(tot)],['Ticket médio',rs.length?fmt(tot/rs.length):'—'],['Com relato específico',esp],['Desistência ML (sem motivo)',rs.length-esp]].map(k=>`<div class="card kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div></div>`).join('');
+ bars('cMd',cnt(rs,r=>r.md),true);bars('cSku',cnt(rs,r=>r.sku));bars('cPl',cnt(rs,r=>r.plat));bars('cMes',cnt(rs,r=>MES[r.dt.slice(0,7)]||r.dt.slice(0,7)));
+ COLS.forEach(c=>document.getElementById('a_'+c[0]).textContent=c[0]===sortK?(sortD>0?' ▲':' ▼'):'');
+ document.getElementById('tb').innerHTML=rs.map(r=>`<tr><td><b>${r.relato}</b>${r.tag?`<div class="mu">tag: ${r.tag}</div>`:''}</td><td><span class="pill">${r.md}</span></td><td>${r.res}</td><td>${r.sku}</td><td><span class="pill ${r.plat==='Shopee'?'sh':r.plat==='TikTok Shop'?'tt':'ml'}">${r.plat}</span></td><td>${r.cat}</td><td>${fmt(r.val)}</td><td>${dfmt(r.dt)}</td><td>${r.ped}</td></tr>`).join('')||'<tr><td colspan="9">Nenhuma devolução com esses filtros.</td></tr>';
+ document.getElementById('ft').textContent=rs.length+' de '+famRows().length+' devoluções exibidas';window.__rs=rs;rateBlock()}
+document.getElementById('csv').onclick=()=>{const rs=window.__rs;const h=['Relato','Motivo detalhado','Leitura','SKU','Plataforma','Categoria','Valor','Data','Pedido','Devolução'];
+ const q=v=>'"'+String(v).replace(/"/g,'""')+'"';const t=[h.map(q).join(';')].concat(rs.map(r=>[r.relato,r.md,r.res,r.sku,r.plat,r.cat,String(r.val).replace('.',','),dfmt(r.dt),r.ped,r.dev].map(q).join(';'))).join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+t],{type:'text/csv'}));a.download='SKU '+fam+' - devolucoes 30 dias.csv';a.click()};
+setFam('03147');
+</script></body></html>
